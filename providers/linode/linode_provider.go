@@ -50,13 +50,17 @@ func (LinodeProvider) GetResourceConnections() map[string]map[string][]string {
 func (p *LinodeProvider) GetSupportedService() map[string]terraformutils.ServiceGenerator {
 	return map[string]terraformutils.ServiceGenerator{
 		"domain":       &DomainGenerator{},
+		"firewall":     &LKEGenerator{},
 		"image":        &ImageGenerator{},
 		"instance":     &InstanceGenerator{},
+		"lke":			&LKEGenerator{},
 		"nodebalancer": &NodeBalancerGenerator{},
+		"objectstorage":&ObjectStorageGenerator{},
 		"rdns":         &RDNSGenerator{},
 		"sshkey":       &SSHKeyGenerator{},
 		"stackscript":  &StackScriptGenerator{},
 		"token":        &TokenGenerator{},
+		"user":			&UserGenerator{},
 		"volume":       &VolumeGenerator{},
 	}
 }
