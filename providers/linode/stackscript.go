@@ -29,22 +29,22 @@ type StackScriptGenerator struct {
 func (g StackScriptGenerator) createResources(stackscriptList []linodego.Stackscript) []terraformutils.Resource {
 	var resources []terraformutils.Resource
 	for _, stackscript := range stackscriptList {
-		// Avoid importing all community stackscripts
-		if !stackscript.IsPublic {
-			resources = append(resources, terraformutils.NewSimpleResource(
-				strconv.Itoa(stackscript.ID),
-				strconv.Itoa(stackscript.ID),
-				"linode_stackscript",
-				"linode",
-				[]string{}))
-		}
+		resources = append(resources, terraformutils.NewSimpleResource(
+			strconv.Itoa(stackscript.ID),
+			strconv.Itoa(stackscript.ID),
+			"linode_stackscript",
+			"linode",
+			[]string{}))
 	}
 	return resources
 }
 
 func (g *StackScriptGenerator) InitResources() error {
 	client := g.generateClient()
-	output, err := client.ListStackscripts(context.Background(), nil)
+	output, err := client.ListStackscripts(context.Background(), &linodego.ListOptions{
+		// Avoid getting public StackScripts
+		Filter: "{\"is_public\": false}",
+	})
 	if err != nil {
 		return err
 	}
